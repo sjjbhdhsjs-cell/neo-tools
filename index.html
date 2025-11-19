@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AETHER-PRIME: Intelligence Hub | Marketing Digital Elite</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome (Ícones) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Google Fonts: Dosis (Títulos) e Inter (Corpo) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@600;700;800&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- AOS (Animações ao Rolar) -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Paleta de Cores (Elite Black Ops: Preto, Dourado e Vermelho) */
+            --bg: #030303;          /* Fundo Preto Puro */
+            --card-bg: #0a0a0a;     /* Fundo do Cartão */
+            --primary: #FFD700;     /* Acento Dourado/Amarelo Metálico */
+            --secondary: #CC0000;   /* Acento Vermelho Sangue / Perigo */
+            --text-light: #F0F0F0;  /* Texto Principal */
+            --text-muted: #888888;  /* Texto Secundário */
+            --border-glow: rgba(255, 215, 0, 0.2);
+            
+            /* Fontes */
+            --font-body: 'Inter', sans-serif;
+            --font-heading: 'Dosis', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-light);
+            font-family: var(--font-body);
+            line-height: 1.7;
+            overflow-x: hidden; /* Evita rolagem horizontal indesejada */
+            
+            /* Efeito Sutil de Fundo Tecnológico */
+            background-image: 
+                linear-gradient(rgba(255, 215, 0, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 215, 0, 0.03) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+
+        /* --- Barra de Rolagem Personalizada --- */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: var(--secondary); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+
+        /* --- Barra de Navegação Lateral (Fixo) --- */
+        .sidebar-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 260px;
+            height: 100%;
+            background-color: rgba(5, 5, 5, 0.98);
+            border-right: 1px solid var(--border-glow);
+            padding: 2rem 0;
+            overflow-y: auto;
+            z-index: 1050; /* Acima de tudo */
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .sidebar-brand {
+            text-align: center;
+            color: var(--primary);
+            font-family: var(--font-heading);
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 2rem;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+            letter-spacing: 2px;
+        }
+
+        .sidebar-nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            padding: 0.8rem 1.5rem;
+            font-size: 0.95rem;
+            font-family: var(--font-heading);
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            border-left: 3px solid transparent;
+        }
+
+        .sidebar-nav a:hover, .sidebar-nav a.active {
+            color: var(--text-light);
+            background: linear-gradient(90deg, rgba(204, 0, 0, 0.1), transparent);
+            border-left-color: var(--secondary);
+            padding-left: 2rem;
+        }
+        
+        .sidebar-nav a.completed {
+            color: var(--primary);
+        }
+        .sidebar-nav a.completed i {
+            color: var(--primary);
+        }
+
+        .sidebar-nav i {
+            width: 25px;
+            margin-right: 10px;
+            text-align: center;
+        }
+        
+        .sidebar-progress {
+            padding: 1.5rem;
+            border-top: 1px solid var(--border-glow);
+            margin-top: auto;
+        }
+        .progress {
+            height: 6px;
+            background-color: #222;
+        }
+        .progress-bar {
+            background-color: var(--primary);
+            box-shadow: 0 0 10px var(--primary);
+        }
+
+        /* Overlay para Mobile (Fundo escuro quando o menu abre) */
+        .mobile-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(3px);
+            z-index: 1040;
+        }
+        .mobile-overlay.active {
+            display: block;
+        }
+
+        /* --- Conteúdo Principal --- */
+        .content-wrapper {
+            margin-left: 260px; /* Espaço para a sidebar no Desktop */
+            padding: 0;
+            transition: margin-left 0.3s ease-in-out;
+        }
+
+        /* --- Hero Section --- */
+        .hero-section {
+            background: linear-gradient(135deg, #000000 0%, #1a0505 100%);
+            min-height: 100vh; /* Ocupa a altura total da tela */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 2px solid var(--secondary);
+            padding: 2rem;
+        }
+        
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: 
+                radial-gradient(circle, transparent 20%, #030303 120%),
+                url('https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=1600&q=80&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.2;
+            z-index: 0;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 1000px;
+        }
+
+        .hero-title {
+            font-family: var(--font-heading);
+            font-weight: 800;
+            font-size: clamp(3rem, 8vw, 5.5rem); /* Tamanho responsivo fluido */
+            color: var(--text-light);
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: -2px;
+        }
+        
+        .hero-title span {
+            color: var(--secondary);
+            text-shadow: 0 0 20px rgba(204, 0, 0, 0.6);
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1rem, 3vw, 1.4rem);
+            color: var(--text-muted);
+            margin: 0 auto 3rem auto;
+            line-height: 1.5;
+        }
+
+        .btn-cta {
+            background-color: var(--primary);
+            color: #000;
+            font-weight: 800;
+            padding: 1rem 3rem;
+            border-radius: 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 2px solid var(--primary);
+            transition: all 0.3s;
+            font-family: var(--font-heading);
+            font-size: 1.1rem;
+            width: 100%;
+            max-width: 350px; /* Limita largura em telas grandes */
+        }
+        .btn-cta:hover {
+            background-color: transparent;
+            color: var(--primary);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.4);
+        }
+
+        /* --- Módulos (Holo-Cards) --- */
+        .module-section {
+            padding: 4rem 1.5rem; /* Padding menor no mobile */
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        @media (min-width: 768px) {
+            .module-section {
+                padding: 5rem 3rem;
+            }
+        }
+
+        .holo-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-left: 4px solid var(--secondary);
+            padding: 2rem; /* Padding adaptável */
+            border-radius: 4px;
+            position: relative;
+            transition: transform 0.3s;
+            height: 100%; /* Garante altura igual em grids */
+        }
+        .holo-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border-color: var(--primary);
+        }
+
+        .holo-card h2 {
+            color: var(--primary);
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap; /* Permite quebra em telas muito pequenas */
+        }
+        .holo-card h2 i {
+            margin-right: 15px;
+            color: var(--secondary);
+            font-size: 0.8em;
+        }
+
+        .holo-card h3 {
+            color: var(--text-light);
+            font-size: 1.3rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            border-bottom: 1px dashed var(--border-glow);
+            padding-bottom: 0.5rem;
+            display: inline-block;
+        }
+
+        .holo-card p {
+            color: #aaa;
+            margin-bottom: 1.2rem;
+        }
+
+        .holo-card ul {
+            list-style: none;
+            padding: 0;
+        }
+        .holo-card ul li {
+            margin-bottom: 0.8rem;
+            padding-left: 1.5rem;
+            position: relative;
+            color: #ccc;
+        }
+        .holo-card ul li::before {
+            content: '►';
+            position: absolute;
+            left: 0;
+            color: var(--secondary);
+            font-size: 0.8rem;
+            top: 4px;
+        }
+        
+        /* Glossário */
+        .glossary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        .glossary-item {
+            background: #151515;
+            padding: 1rem;
+            border: 1px solid #333;
+        }
+        .glossary-term {
+            color: var(--primary);
+            font-weight: bold;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Ferramentas IA */
+        .ai-tool-panel {
+            background: #0f0f0f;
+            border: 1px solid var(--primary);
+            padding: 1.5rem;
+            margin-top: 2rem;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.1);
+        }
+        .ai-output {
+            background: #000;
+            border-left: 3px solid var(--secondary);
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            font-family: monospace;
+            color: #0f0;
+            min-height: 100px;
+            white-space: pre-wrap;
+            font-size: 0.9rem;
+        }
+
+        /* --- Responsividade e Mobile --- */
+        
+        /* Mobile Toggle Button (Hambúrguer) */
+        .mobile-nav-toggle {
+            display: none; /* Escondido em desktop */
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            z-index: 1100;
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 0.6rem 0.8rem;
+            border-radius: 4px;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            cursor: pointer;
+        }
+
+        /* Regras para telas menores que 992px (Tablets e Celulares) */
+        @media (max-width: 992px) {
+            .sidebar-nav {
+                transform: translateX(-100%); /* Esconde a sidebar */
+                width: 280px;
+                box-shadow: 5px 0 15px rgba(0,0,0,0.5);
+            }
+            .sidebar-nav.active {
+                transform: translateX(0); /* Mostra a sidebar */
+            }
+            .content-wrapper {
+                margin-left: 0; /* Remove margem do conteúdo */
+            }
+            .mobile-nav-toggle {
+                display: block; /* Mostra o botão */
+            }
+            
+            /* Ajustes de fonte e espaçamento para mobile */
+            h1 { font-size: 2.5rem; }
+            h2 { font-size: 1.8rem; }
+            .holo-card { padding: 1.5rem; }
+            .glossary-grid { grid-template-columns: 1fr; } /* Uma coluna no glossário */
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Botão Menu Mobile -->
+    <button class="mobile-nav-toggle" onclick="toggleMobileMenu()">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Fundo Escuro para Mobile (Backdrop) -->
+    <div class="mobile-overlay" onclick="toggleMobileMenu()"></div>
+
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar-nav">
+        <div class="sidebar-brand">AETHER<br>PRIME</div>
+        
+        <a href="#hero" class="active" onclick="closeMobileMenu()"><i class="fas fa-home"></i> Início</a>
+        <a href="#mod1" onclick="closeMobileMenu()"><i class="fas fa-chess"></i> 1. Estratégia</a>
+        <a href="#mod2" onclick="closeMobileMenu()"><i class="fas fa-search"></i> 2. SEO Elite</a>
+        <a href="#mod3" onclick="closeMobileMenu()"><i class="fas fa-dollar-sign"></i> 3. Tráfego Pago</a>
+        <a href="#mod4" onclick="closeMobileMenu()"><i class="fas fa-pen-nib"></i> 4. Conteúdo & Copy</a>
+        <a href="#mod5" onclick="closeMobileMenu()"><i class="fas fa-envelope"></i> 5. E-mail & CRM</a>
+        <a href="#mod6" onclick="closeMobileMenu()"><i class="fas fa-chart-line"></i> 6. Analytics & Data</a>
+        <a href="#mod7" onclick="closeMobileMenu()"><i class="fas fa-microchip"></i> 7. NEO-TOOLS (IA)</a>
+        <a href="#mod8" onclick="closeMobileMenu()"><i class="fas fa-rocket"></i> 8. Growth Hacking</a>
+        <a href="#mod9" onclick="closeMobileMenu()"><i class="fas fa-brain"></i> 9. Neuromarketing</a>
+        <a href="#mod10" onclick="closeMobileMenu()"><i class="fas fa-book"></i> 10. Glossário Tático</a>
+        
+        <a href="#quiz-final" style="margin-top: 2rem; color: var(--secondary);" onclick="closeMobileMenu()"><i class="fas fa-trophy"></i> Prova Final</a>
+        <a href="#certificado" id="btn-cert-nav" style="opacity: 0.5; pointer-events: none;" onclick="closeMobileMenu()"><i class="fas fa-certificate"></i> Certificado</a>
+
+        <div class="sidebar-progress">
+            <p class="small text-muted mb-1">Progresso Global</p>
+            <div class="progress">
+                <div class="progress-bar" id="global-progress" style="width: 0%"></div>
+            </div>
+            <p class="text-end small text-primary mt-1" id="progress-text">0%</p>
+        </div>
+    </nav>
+
+    <!-- Main Wrapper -->
+    <div class="content-wrapper">
+        
+        <!-- Hero -->
+        <section id="hero" class="hero-section">
+            <div class="hero-content" data-aos="zoom-in">
+                <h1 class="hero-title">AETHER <span>PRIME</span></h1>
+                <p class="hero-subtitle">
+                    A Enciclopédia Tática Definitiva de Marketing Digital.<br>
+                    Estratégia. Dados. Psicologia. Crescimento Exponencial.
+                </p>
+                <a href="#mod1" class="btn btn-cta">Iniciar Protocolo de Aprendizado</a>
+            </div>
+        </section>
+
+        <!-- MÓDULO 1: ESTRATÉGIA -->
+        <section id="mod1" class="module-section">
+            <div class="holo-card" data-aos="fade-up">
+                <h2><i class="fas fa-chess"></i> MÓDULO 1: Estratégia e Fundamentos</h2>
+                <p class="lead text-light">Não comece gastando dinheiro. Comece entendendo o campo de batalha.</p>
+                
+                <h3>Análise de Mercado (Os 3 Cs)</h3>
+                <ul>
+                    <li><strong>Company (Empresa):</strong> Qual é a sua Proposta de Valor Única (UVP)? Por que alguém compraria de você e não do concorrente? Defina sua SWOT (Forças, Fraquezas, Oportunidades, Ameaças).</li>
+                    <li><strong>Customer (Cliente):</strong> Quem é sua Buyer Persona? Não apenas "homens de 30 anos", mas "João, 32, gerente de TI, frustrado com a falta de tempo, busca automação".</li>
+                    <li><strong>Competitors (Concorrentes):</strong> Quem já resolve o problema? Onde eles falham? Use ferramentas como SEMrush para espiar o tráfego deles.</li>
+                </ul>
+
+                <h3>Matemática do Crescimento (Unit Economics)</h3>
+                <p>Se você não sabe quanto pode pagar por um cliente, você já perdeu.</p>
+                <ul>
+                    <li><strong>CAC (Customer Acquisition Cost):</strong> (Custo Marketing + Vendas) / Novos Clientes.</li>
+                    <li><strong>LTV (Lifetime Value):</strong> Quanto um cliente gasta em toda a vida com você.</li>
+                    <li><strong>Regra de Ouro:</strong> O LTV deve ser pelo menos 3x maior que o CAC (LTV:CAC > 3).</li>
+                    <li><strong>Churn Rate:</strong> A taxa de cancelamento. O buraco no balde. Reduzir o churn é mais barato que adquirir novos clientes.</li>
+                </ul>
+
+                <h3>B2B vs. B2C</h3>
+                <ul>
+                    <li><strong>B2B (Business to Business):</strong> Ciclo de vendas longo, decisão racional, múltiplos decisores. Foco em LinkedIn, E-mail frio, Whitepapers.</li>
+                    <li><strong>B2C (Business to Consumer):</strong> Ciclo curto, decisão emocional/impulso. Foco em Instagram, TikTok, Influencers, Prova Social visual.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- MÓDULO 2: SEO -->
+        <section id="mod2" class="module-section">
+            <div class="holo-card" data-aos="fade-up">
+                <h2><i class="fas fa-search"></i> MÓDULO 2: SEO de Elite (Inbound)</h2>
+                <p>Tráfego pago para de funcionar quando você para de pagar. SEO é um ativo de longo prazo.</p>
+                
+                <h3>SEO On-Page (Técnico)</h3>
+                <ul>
+                    <li><strong>Core Web Vitals:</strong> O Google mede a velocidade (LCP), interatividade (FID) e estabilidade visual (CLS). Seu site precisa ser rápido.</li>
+                    <li><strong>Arquitetura da Informação:</strong> Estrutura de URLs limpa (ex: site.com/marketing/seo) e links internos para distribuir autoridade.</li>
+                    <li><strong>Schema Markup:</strong> Código invisível (JSON-LD) que diz ao Google o que é o seu conteúdo (Receita, Produto, Evento) para gerar Rich Snippets.</li>
+                </ul>
+
+                <h3>SEO Off-Page (Autoridade)</h3>
+                <ul>
+                    <li><strong>Backlinks:</strong> A moeda da web. Um link do G1 ou Forbes para o seu site vale mais que 1000 links de blogs pequenos.</li>
+                    <li><strong>Digital PR:</strong> Criar conteúdo virável ou dados exclusivos que jornalistas queiram citar e linkar.</li>
+                </ul>
+
+                <h3>E-E-A-T</h3>
+                <p>O critério de qualidade do Google: <strong>Experiência, Expertise, Autoridade e Confiança</strong>. Para nichos YMYL (Saúde/Dinheiro), isso é obrigatório. Tenha bios de autores qualificados.</p>
+            </div>
+        </section>
+
+        <!-- MÓDULO 3: TRÁFEGO PAGO -->
+        <section id="mod3" class="module-section">
+            <div class="holo-card" data-aos="fade-up">
+                <h2><i class="fas fa-dollar-sign"></i> MÓDULO 3: Tráfego Pago & Mídia</h2>
+                
+                <h3>O Ecossistema de Ads</h3>
+                <ul>
+                    <li><strong>Google Ads (Intenção):</strong> Captura quem JÁ sabe o que quer. "Comprar tênis de corrida". Alta conversão, CPC mais caro.</li>
+                    <li><strong>Meta Ads (Atenção):</strong> Interrompe o usuário com base em interesses. Bom para gerar desejo e branding.</li>
+                    <li><strong>LinkedIn Ads (Profissional):</strong> Caro, mas permite segmentar por cargo "Diretor de Marketing". Poderoso para B2B.</li>
+                </ul>
+
+                <h3>O Pixel (O Cérebro da Campanha)</h3>
+                <p>Nunca rode anúncios sem instalar o Pixel (Meta) ou Tag (Google). Ele rastreia quem comprou, quem abandonou o carrinho e permite:</p>
+                <ul>
+                    <li><strong>Otimização de Conversão:</strong> O algoritmo aprende quem compra e busca pessoas parecidas.</li>
+                    <li><strong>Lookalike Audiences:</strong> "Google, encontre 1 milhão de pessoas parecidas com meus melhores clientes".</li>
+                    <li><strong>Remarketing Dinâmico:</strong> Mostrar exatamente o produto que a pessoa viu e não comprou.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- MÓDULO 4: CONTEÚDO -->
+        <section id="mod4" class="module-section">
+            <div class="holo-card" data-aos="fade-up">
+                <h2><i class="fas fa-pen-nib"></i> MÓDULO 4: Conteúdo e Copywriting</h2>
+                
+                <h3>Fórmulas de Copywriting</h3>
+                <ul>
+                    <li><strong>AIDA:</strong> Atenção (Headline impactante), Interesse (Dados/Curiosidade), Desejo (Benefícios, não características), Ação (CTA claro).</li>
+                    <li><strong>PAS:</strong> Problema (Toque na ferida), Agitação (Torça a faca, mostre as consequências), Solução (Seu produto).</li>
+                </ul>
+
+                <h3>Gatilhos Mentais (Aceleradores)</h3>
+                <ul>
+                    <li><strong>Escassez:</strong> "Só restam 3 vagas". O medo de perder (FOMO) move a ação.</li>
+                    <li><strong>Autoridade:</strong> "Recomendado por 9 entre 10 dentistas".</li>
+                    <li><strong>Prova Social:</strong> "Mais de 10.000 alunos satisfeitos". Ninguém quer ser a cobaia.</li>
+                </ul>
+
+                <h3>Marketing de Conteúdo (Funil)</h3>
+                <ul>
+                    <li><strong>Topo (ToFu):</strong> Blog posts, Redes Sociais. Educativo e amplo.</li>
+                    <li><strong>Meio (MoFu):</strong> E-books, Webinars, Quizzes. Captura o lead em troca de valor.</li>
+                    <li><strong>Fundo (BoFu):</strong> Cases de Sucesso, Demonstrações, Comparativos. Foco na venda.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- MÓDULO 5: EMAIL & CRM -->
+        <section id="mod5" class="module-section">
+            <div class="holo-card" data-aos="fade-up">
+                <h2><i class="fas fa-envelope"></i> MÓDULO 5: E-mail Marketing & CRM</h2>
+                
+                <h3>Por que E-mail?</h3>
+                <p>É o único canal que você é dono. Redes sociais podem cortar seu alcance. O e-mail é direto.</p>
+
+                <h3>Automação (Régua de Relacionamento)</h3>
+                <ul>
+                    <li><strong>Onboarding:</strong> Série de boas-vindas imediata após cadastro. Entregue o prometido e apresente a marca.</li>
+                    <li><strong>Carrinho Abandonado:</strong> Recupera 15-30% das vendas perdidas. Envie 1h depois, 24h depois (com desconto?).</li>
+                    <li><strong>Win-Back:</strong> Para quem não compra há 6 meses. "Sentimos sua falta".</li>
+                </ul>
+
+                <h3>Higiene de Lista</h3>
+                <p>Não tenha medo de deletar contatos inativos. Eles prejudicam sua taxa de entrega (deliverability). Mantenha a lista limpa e engajada.</p>
+            </div>
+        </section>
+
+        <!-- MÓDULO 6: ANALYTICS -->
+        <section id="mod6" class="module-section">
+            <div class="holo-card" data-aos="fade-up">
+                <h2><i class="fas fa-chart-line"></i> MÓDULO 6: Analytics & Data Science</h2>
+                
+                <h3>Modelos de Atribuição</h3>
+                <p>Se o cliente viu um Anúncio no Insta, clicou num Google Ad e comprou por E-mail, quem ganha o crédito?</p>
+                <ul>
+                    <li><strong>Last Click:</strong> O e-mail leva 100%. Ignora a descoberta.</li>
+                    <li><strong>Linear:</strong> 33% para cada.</li>
+                    <li><strong>Data-Driven (GA4):</strong> A IA decide qual canal teve mais impacto real na decisão.</li>
+                </ul>
+
+                <h3>UTM Tracking</h3>
+                <p>Nunca poste um link sem UTMs. `site.com?utm_source=instagram&utm_medium=stories&utm_campaign=verao`. Sem isso, todo tráfego parece "Direto" e você fica cego.</p>
+            </div>
+        </section>
+
+        <!-- MÓDULO 7: NEO-TOOLS -->
+        <section id="mod7" class="module-section">
+            <div class="holo-card" data-aos="fade-up" style="border-color: var(--primary);">
+                <h2><i class="fas fa-microchip"></i> MÓDULO 7: NEO-TOOLS (IA Integrada)</h2>
+                <p>Use a inteligência do Google Gemini para gerar ativos de marketing instantaneamente.</p>
+                
+                <div class="ai-tool-panel">
+                    <h4><i class="fas fa-user-astronaut"></i> Gerador de Persona Tática</h4>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <input type="text" id="persona_nicho" class="form-control bg-dark text-light" placeholder="Nicho (Ex: Fitness para Idosos)">
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" id="persona_produto" class="form-control bg-dark text-light" placeholder="Produto (Ex: Curso de Yoga Online)">
+                        </div>
+                    </div>
+                    <button onclick="generatePersona()" class="btn btn-cta btn-sm mt-3 w-100">Gerar Persona com IA</button>
+                    <div id="persona-output" class="ai-output">Os dados da persona aparecerão aqui...</div>
+                </div>
+
+                <div class="ai-tool-panel">
+                    <h4><i class="fas fa-bullhorn"></i> Gerador de Headlines Virais</h4>
+                    <input type="text" id="copy_tema" class="form-control bg-dark text-light" placeholder="Tema do Conteúdo (Ex: Como perder peso sem dieta)">
+                    <button onclick="generateCopy()" class="btn btn-cta btn-sm mt-3 w-100">Gerar Headlines</button>
+                    <div id="copy-output" class="ai-output">As ideias de copy aparecerão aqui...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MÓDULO 8: GROWTH HACKING (NOVO) -->
+        <section id="mod8" class="module-section">
+            <div class="holo-card" data-aos="fade-up">
+                <h2><i class="fas fa-rocket"></i> MÓDULO 8: Growth Hacking & Escala</h2>
+                <p>Growth não é mágica, é processo. É a interseção de Marketing, Produto e Engenharia.</p>
+                
+                <h3>Métricas Pirata (AARRR)</h3>
+                <ul>
+                    <li><strong>Acquisition (Aquisição):</strong> Como eles te encontram? (SEO, Ads).</li>
+                    <li><strong>Activation (Ativação):</strong> A primeira experiência "Aha!". Eles usaram o produto?</li>
+                    <li><strong>Retention (Retenção):</strong> Eles voltam? A métrica mais importante para sustentabilidade.</li>
+                    <li><strong>Referral (Indicação):</strong> Eles convidam amigos? O motor do crescimento viral (K-Factor).</li>
+                    <li><strong>Revenue (Receita):</strong> Eles pagam?</li>
+                </ul>
+
+                <h3>O Processo ICE Score</h3>
+                <p>Como priorizar testes de crescimento:</p>
+                <ul>
+                    <li><strong>Impact (Impacto):</strong> Se funcionar, quão grande será o resultado? (1-10)</li>
+                    <li><strong>Confidence (Confiança):</strong> Qual a certeza de que vai funcionar? (1-10)</li>
+                    <li><strong>Ease (Facilidade):</strong> Quão fácil é implementar? (1-10)</li>
+                </ul>
+                <p>Média = (I+C+E)/3. Priorize o maior score.</p>
+            </div>
+        </section>
+
+        <!-- MÓDULO 9: NEUROMARKETING (NOVO) -->
+        <section id="mod9" class="module-section">
+            <div class="holo-card" data-aos="fade-up">
+                <h2><i class="fas fa-brain"></i> MÓDULO 9: Neuromarketing & Vieses</h2>
+                
+                <h3>Vieses Cognitivos na Compra</h3>
+                <ul>
+                    <li><strong>Ancoragem:</strong> Mostrar um preço alto primeiro (R$ 5.000) faz o preço real (R$ 2.000) parecer barato.</li>
+                    <li><strong>Efeito Halo:</strong> Se o design do site é bonito, o usuário assume que o produto é bom e a empresa é confiável.</li>
+                    <li><strong>Paradoxo da Escolha:</strong> Muitas opções paralisam. Ofereça 3 planos, destaque 1.</li>
+                </ul>
+
+                <h3>Cores e Emoções</h3>
+                <ul>
+                    <li><strong>Vermelho:</strong> Urgência, fome, paixão, perigo. (Botões de compra, liquidação).</li>
+                    <li><strong>Azul:</strong> Confiança, segurança, tecnologia. (Bancos, Software).</li>
+                    <li><strong>Laranja:</strong> Acessível, amigável, impulso.</li>
+                    <li><strong>Preto:</strong> Luxo, exclusividade, poder. (Marcas de alto padrão).</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- MÓDULO 10: GLOSSÁRIO (NOVO) -->
+        <section id="mod10" class="module-section">
+            <div class="holo-card" data-aos="fade-up">
+                <h2><i class="fas fa-book"></i> MÓDULO 10: Glossário Tático</h2>
+                <p>O dicionário de bolso do profissional de elite.</p>
+                
+                <div class="glossary-grid">
+                    <div class="glossary-item">
+                        <span class="glossary-term">API</span>
+                        Integração entre softwares. Permite que seu CRM fale com seu E-mail.
+                    </div>
+                    <div class="glossary-item">
+                        <span class="glossary-term">Bounce Rate</span>
+                        Taxa de rejeição. Pessoas que entram e saem sem clicar em nada.
+                    </div>
+                    <div class="glossary-item">
+                        <span class="glossary-term">CTA (Call to Action)</span>
+                        O comando para ação. "Compre agora", "Saiba mais".
+                    </div>
+                    <div class="glossary-item">
+                        <span class="glossary-term">Evergreen</span>
+                        Conteúdo que nunca fica velho (ex: "Como amarrar sapatos").
+                    </div>
+                    <div class="glossary-item">
+                        <span class="glossary-term">KPI</span>
+                        Key Performance Indicator. A métrica que importa.
+                    </div>
+                    <div class="glossary-item">
+                        <span class="glossary-term">Landing Page</span>
+                        Página focada em uma única conversão, sem menu de navegação.
+                    </div>
+                    <div class="glossary-item">
+                        <span class="glossary-term">Lead</span>
+                        Alguém que te deu o contato (e-mail/telefone).
+                    </div>
+                    <div class="glossary-item">
+                        <span class="glossary-term">NPS (Net Promoter Score)</span>
+                        Mede a satisfação. "De 0 a 10, quanto você nos indicaria?".
+                    </div>
+                    <div class="glossary-item">
+                        <span class="glossary-term">SaaS</span>
+                        Software as a Service. Modelo de assinatura de software.
+                    </div>
+                    <div class="glossary-item">
+                        <span class="glossary-term">Upsell</span>
+                        Vender uma versão mais cara do produto que a pessoa está comprando.
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- FIM DA JORNADA -->
+        <section id="quiz-final" class="module-section text-center">
+            <h2 class="text-primary mb-4">VALIDAÇÃO DE CONHECIMENTO</h2>
+            <p class="mb-4">Você consumiu o conteúdo. Agora prove que domina.</p>
+            <button class="btn btn-cta" onclick="alert('Sistema de Prova Final em manutenção para atualização de segurança.')">INICIAR EXAME FINAL</button>
+        </section>
+
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 AETHER-PRIME. Todos os direitos reservados.</p>
+            <p class="small text-muted">Desenvolvido com Tecnologia Gemini & Bootstrap 5.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <script>
+        // --- Funções de Controle do Menu Mobile ---
+        function toggleMobileMenu() {
+            document.querySelector('.sidebar-nav').classList.toggle('active');
+            document.querySelector('.mobile-overlay').classList.toggle('active');
+        }
+
+        function closeMobileMenu() {
+            document.querySelector('.sidebar-nav').classList.remove('active');
+            document.querySelector('.mobile-overlay').classList.remove('active');
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            AOS.init();
+
+            // Lógica de Rastreamento de Progresso
+            const links = document.querySelectorAll('.sidebar-nav a[href^="#mod"]');
+            const progressText = document.getElementById('progress-text');
+            const progressBar = document.getElementById('global-progress');
+            const certBtn = document.getElementById('btn-cert-nav');
+            const totalModules = 10; // Módulos de 1 a 10
+            let visited = new Set();
+
+            // Observer para marcar como lido quando visível
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.getAttribute('id');
+                        if (!visited.has(id)) {
+                            visited.add(id);
+                            updateProgress();
+                            
+                            // Marca visualmente na sidebar
+                            const link = document.querySelector(`.sidebar-nav a[href="#${id}"]`);
+                            if (link) link.classList.add('completed');
+                        }
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            document.querySelectorAll('section[id^="mod"]').forEach(section => {
+                observer.observe(section);
+            });
+
+            function updateProgress() {
+                const percent = Math.round((visited.size / totalModules) * 100);
+                progressBar.style.width = percent + '%';
+                progressText.innerText = percent + '%';
+
+                if (percent >= 100) {
+                    certBtn.style.opacity = '1';
+                    certBtn.style.pointerEvents = 'auto';
+                    certBtn.style.color = '#FFD700';
+                    certBtn.innerHTML = '<i class="fas fa-certificate"></i> CERTIFICADO LIBERADO';
+                }
+            }
+        });
+
+        // --- API GEMINI ---
+        const apiKey = ""; 
+        const API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent";
+
+        // Função Genérica para chamar a API
+        async function callGemini(prompt, outputId) {
+            const output = document.getElementById(outputId);
+            output.innerHTML = 'Processando dados táticos... <i class="fas fa-spinner fa-spin"></i>';
+            
+            const payload = {
+                contents: [{ parts: [{ text: prompt }] }]
+            };
+
+            try {
+                const response = await fetch(API_URL + `?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                const data = await response.json();
+                const text = data.candidates[0].content.parts[0].text;
+                
+                // Formatação simples
+                output.innerHTML = text.replace(/\*\*(.*?)\*\*/g, '<strong style="color:var(--primary)">$1</strong>').replace(/\n/g, '<br>');
+                
+            } catch (error) {
+                output.innerHTML = 'Erro na conexão neural. Tente novamente.';
+                console.error(error);
+            }
+        }
+
+        function generatePersona() {
+            const nicho = document.getElementById('persona_nicho').value;
+            const produto = document.getElementById('persona_produto').value;
+            const prompt = `Atue como um estrategista de marketing sênior. Crie uma Buyer Persona detalhada para o nicho "${nicho}" interessada no produto "${produto}". Inclua: Nome, Idade, Cargo, Dores Principais, Desejos Profundos e Objeções de Compra. Seja direto e use listas.`;
+            callGemini(prompt, 'persona-output');
+        }
+
+        function generateCopy() {
+            const tema = document.getElementById('copy_tema').value;
+            const prompt = `Atue como um copywriter de resposta direta. Escreva 3 variações de Headlines (Títulos) altamente persuasivas e com gatilhos mentais para um conteúdo sobre "${tema}". Depois, escreva um parágrafo introdutório usando a técnica AIDA.`;
+            callGemini(prompt, 'copy-output');
+        }
+    </script>
+</body>
+</html>
