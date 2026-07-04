@@ -61,7 +61,7 @@
     <script>
         const CONFIG = {
             nomeDela: "Meu Amor ❤️",        // Nome ou apelido dela
-            seuNome: "Seu Nome",          // Seu nome ou apelido
+            seuNome: "Lipe",              // Seu nome atualizado para Lipe
             // Data de início (Ano, Mês-1, Dia, Hora, Minuto).
             dataInicio: new Date(2026, 4, 2, 14, 0, 0), 
             musicaUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" // Link do áudio de fundo
@@ -569,7 +569,7 @@
             const btn = document.getElementById('btn-no');
             const randomX = Math.random() * 220 - 110;
             const randomY = Math.random() * 140 - 70;
-            btn.style.transform = `translate(${randomX}px, ${randomY}px)`;
+            btn.style.transform = `translate(${randomX-10}px, ${randomY}px)`;
             
             attempts++;
             if (attempts > 3) {
