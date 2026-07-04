@@ -1,11 +1,24 @@
 <!DOCTYPE html>
-<html lang="pt-PT">
+<html lang="pt-PT" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Para o Meu Amor ❤️</title>
-    <!-- Tailwind CSS para um design moderno e elegante -->
+    <!-- Tailwind CSS com suporte a Dark Mode baseado em classe -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    animation: {
+                        'pulse-slow': 'pulse-slow 4s infinite ease-in-out',
+                        'spin-slow': 'spin 12s linear infinite',
+                    }
+                }
+            }
+        }
+    </script>
     <!-- Lucide Icons para ícones delicados e românticos -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
@@ -13,6 +26,7 @@
         
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
+            transition: background-color 0.5s ease, color 0.5s ease;
         }
         .font-serif {
             font-family: 'Playfair Display', serif;
@@ -28,9 +42,13 @@
             animation: float linear infinite;
             z-index: 0;
             pointer-events: none;
+            transition: color 0.5s ease;
+        }
+        .dark .heart-particle {
+            color: rgba(251, 113, 133, 0.25);
         }
         .flip-card-inner {
-            transition: transform 0.6s;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
             transform-style: preserve-3d;
         }
         .flip-card:hover .flip-card-inner {
@@ -50,31 +68,43 @@
         .animate-pulse-slow {
             animation: pulse-slow 4s infinite ease-in-out;
         }
+        
+        /* Efeitos de brilho vividos */
+        .glow-rose {
+            box-shadow: 0 0 20px rgba(244, 63, 94, 0.15);
+        }
+        .dark .glow-rose {
+            box-shadow: 0 0 25px rgba(244, 63, 94, 0.35);
+        }
+
+        /* Scrollbar customizada para o mural */
+        .custom-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scroll::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background-color: rgba(244, 63, 94, 0.3);
+            border-radius: 10px;
+        }
     </style>
 </head>
-<body class="bg-gradient-to-b from-rose-50 via-pink-50 to-rose-100 min-h-screen overflow-x-hidden relative pb-24 text-slate-800">
+<body class="bg-gradient-to-b from-rose-50 via-pink-50 to-rose-100 dark:from-black dark:via-[#020617] dark:to-black min-h-screen overflow-x-hidden relative pb-24 text-slate-800 dark:text-slate-100 transition-colors duration-500">
 
     <!-- Chuva de corações em segundo plano -->
     <div id="heart-container" class="fixed inset-0 pointer-events-none overflow-hidden z-0"></div>
 
-    <!-- CONFIGURAÇÕES RÁPIDAS (Pode alterar estes valores para personalizar o site!) -->
-    <script>
-        const CONFIG = {
-            nomeDela: "Meu Amor ❤️",        // Nome ou apelido dela
-            seuNome: "Lipe",              // Seu nome atualizado para Lipe
-            // Data de início (Ano, Mês-1, Dia, Hora, Minuto).
-            dataInicio: new Date(2026, 4, 2, 14, 0, 0), 
-            musicaUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" // Link do áudio de fundo
-        };
-    </script>
-
     <!-- TELA DE ABERTURA -->
-    <div id="welcome-screen" class="fixed inset-0 bg-rose-50 flex flex-col items-center justify-center p-4 z-50">
-        <div class="bg-white p-8 md:p-12 rounded-[2.5rem] shadow-2xl text-center max-w-md w-full border border-rose-100 animate-pulse-slow">
-            <i data-lucide="heart" class="mx-auto text-rose-500 fill-current w-16 h-16 mb-6 animate-bounce"></i>
-            <h1 class="text-2xl md:text-3xl font-bold text-slate-800 mb-3 font-serif">Uma surpresa para ti...</h1>
-            <p class="text-slate-500 mb-8 text-sm md:text-base">Preparei um espaço especial para nós dois para comemorar as nossas conversas. Vamos entrar?</p>
-            <button onclick="startApp()" class="bg-gradient-to-r from-rose-500 to-pink-500 text-white font-bold py-4 px-8 rounded-full shadow-xl hover:shadow-rose-300 hover:scale-105 transition-all w-full text-lg flex items-center justify-center gap-2">
+    <div id="welcome-screen" class="fixed inset-0 bg-rose-50 dark:bg-slate-950 flex flex-col items-center justify-center p-4 z-50 transition-colors duration-500">
+        <div class="bg-white dark:bg-slate-900 p-8 md:p-12 rounded-[2.5rem] shadow-2xl text-center max-w-md w-full border border-rose-100 dark:border-rose-950/50 animate-pulse-slow">
+            <div class="relative inline-block mb-6">
+                <i data-lucide="heart" class="text-rose-500 fill-current w-16 h-16 animate-bounce"></i>
+                <div class="absolute -inset-2 bg-rose-500/20 rounded-full blur-xl animate-pulse"></div>
+            </div>
+            <h1 class="text-2xl md:text-3xl font-bold text-slate-800 dark:text-white mb-3 font-serif">Uma surpresa para ti...</h1>
+            <p class="text-slate-500 dark:text-slate-400 mb-8 text-sm md:text-base">Preparei um espaço especial para nós dois para comemorar as nossas conversas diárias. Vamos entrar?</p>
+            <button onclick="startApp()" class="bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white font-bold py-4 px-8 rounded-full shadow-lg hover:shadow-rose-500/30 hover:scale-105 active:scale-95 transition-all w-full text-lg flex items-center justify-center gap-2">
                 Abrir com Amor <i data-lucide="sparkles" class="w-5 h-5"></i>
             </button>
         </div>
@@ -83,145 +113,114 @@
     <!-- Áudio de Fundo -->
     <audio id="bg-music" loop></audio>
 
-    <!-- Controle de Áudio Flutuante -->
-    <button onclick="toggleMusic()" class="fixed bottom-6 right-6 z-50 bg-white p-4 rounded-full shadow-2xl text-rose-500 hover:scale-110 transition-transform border-2 border-rose-100 flex items-center justify-center gap-2 group shadow-rose-200">
-        <i id="music-icon" data-lucide="volume-x" class="w-6 h-6"></i>
-    </button>
+    <!-- CONTROLES FLUTUANTES -->
+    <div class="fixed bottom-6 right-6 z-50 flex flex-col gap-3">
+        <!-- Alternador de Tema -->
+        <button onclick="toggleTheme()" class="bg-white dark:bg-slate-900 w-14 h-14 rounded-full shadow-2xl text-rose-500 dark:text-amber-400 hover:scale-110 active:scale-95 transition-all border-2 border-rose-100 dark:border-rose-950 flex items-center justify-center shadow-rose-200/50 dark:shadow-slate-950/50 relative overflow-hidden" title="Alternar tema">
+            <span id="theme-sun" class="absolute transition-all duration-500 transform translate-y-0 opacity-100 flex items-center justify-center">
+                <i data-lucide="sun" class="w-6 h-6"></i>
+            </span>
+            <span id="theme-moon" class="absolute transition-all duration-500 transform translate-y-14 opacity-0 flex items-center justify-center">
+                <i data-lucide="moon" class="w-6 h-6"></i>
+            </span>
+        </button>
 
-    <!-- CONTEÚDO PRINCIPAL (Fica oculto até clicar em abrir) -->
+        <!-- Controle de Áudio -->
+        <button onclick="toggleMusic()" class="bg-white dark:bg-slate-900 p-4 rounded-full shadow-2xl text-rose-500 dark:text-rose-400 hover:scale-110 active:scale-95 transition-all border-2 border-rose-100 dark:border-rose-950 flex items-center justify-center shadow-rose-200/50 dark:shadow-slate-950/50" title="Música de fundo">
+            <i id="music-icon" data-lucide="volume-x" class="w-6 h-6"></i>
+        </button>
+    </div>
+
+    <!-- CONTEÚDO PRINCIPAL -->
     <div id="main-content" class="hidden">
         
         <!-- CABEÇALHO -->
         <header class="min-h-screen flex flex-col items-center justify-center text-center p-4 relative z-10">
-            <div class="bg-white/40 p-6 md:p-8 rounded-full backdrop-blur-sm border border-white mb-8">
-                <div class="w-36 h-36 md:w-48 md:h-48 rounded-full overflow-hidden border-4 border-rose-400 shadow-2xl p-1 bg-white mx-auto">
-                    <!-- Imagem fofa representativa de carinho e conexão -->
+            <div class="bg-white/40 dark:bg-slate-900/30 p-6 md:p-8 rounded-full backdrop-blur-sm border border-white dark:border-rose-950/30 mb-8 relative">
+                <div class="absolute -inset-1 bg-gradient-to-r from-rose-500 to-pink-500 rounded-full blur opacity-30 animate-pulse"></div>
+                <div class="w-36 h-36 md:w-48 md:h-48 rounded-full overflow-hidden border-4 border-rose-400 dark:border-rose-500 shadow-2xl p-1 bg-white dark:bg-slate-800 mx-auto relative z-10">
                     <img src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Conexão e amor" class="w-full h-full object-cover rounded-full">
                 </div>
             </div>
-            <h1 class="text-4xl md:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-rose-500 to-pink-500 mb-4 font-serif">
+            
+            <h1 class="text-4xl md:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-rose-500 to-pink-500 dark:from-rose-400 dark:to-pink-400 mb-4 font-serif">
                 Olá, <span id="header-nome-dela">Linda</span>!
             </h1>
-            <p class="text-lg md:text-xl text-slate-700 max-w-xl font-light px-4 leading-relaxed">
-                Escrevi cada linha deste site para comemorar os nossos <strong>2 meses de conversas diárias</strong> e planejar tudo o que ainda vamos viver juntos.
+            <p class="text-lg md:text-xl text-slate-700 dark:text-slate-300 max-w-xl font-light px-4 leading-relaxed">
+                Escrevi cada linha deste site para comemorar os nossos <strong>2 meses de conversas diárias</strong> e planear tudo o que ainda vamos viver juntos.
             </p>
 
-            <!-- CONTADOR DE TEMPO INTERATIVO -->
-            <div class="mt-12 bg-white/80 backdrop-blur-md py-6 px-8 rounded-3xl shadow-xl border border-rose-100 max-w-lg w-full mx-auto">
-                <h3 class="text-rose-500 font-bold text-sm tracking-widest uppercase mb-4 flex items-center justify-center gap-2">
-                    <i data-lucide="clock" class="w-4 h-4"></i> Tempo de Conexão
+            <!-- CONTADOR -->
+            <div class="mt-12 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md py-6 px-8 rounded-3xl shadow-xl border border-rose-100 dark:border-rose-950/50 max-w-lg w-full mx-auto glow-rose transition-all duration-500">
+                <h3 class="text-rose-500 dark:text-rose-400 font-bold text-sm tracking-widest uppercase mb-4 flex items-center justify-center gap-2">
+                    <i data-lucide="clock" class="w-4 h-4 animate-spin-slow"></i> Tempo de Conexão
                 </h3>
                 <div class="grid grid-cols-4 gap-2 text-center">
-                    <div class="bg-rose-50/50 p-2 rounded-xl">
-                        <span id="timer-days" class="text-2xl md:text-3xl font-extrabold text-rose-600 block">00</span>
-                        <span class="text-xs text-slate-500 uppercase font-semibold">Dias</span>
+                    <div class="bg-rose-50/50 dark:bg-rose-950/20 p-2 rounded-xl border border-rose-100/50 dark:border-rose-900/30">
+                        <span id="timer-days" class="text-2xl md:text-3xl font-extrabold text-rose-600 dark:text-rose-400 block drop-shadow-sm">00</span>
+                        <span class="text-[10px] md:text-xs text-slate-500 dark:text-slate-400 uppercase font-bold tracking-wider">Dias</span>
                     </div>
-                    <div class="bg-rose-50/50 p-2 rounded-xl">
-                        <span id="timer-hours" class="text-2xl md:text-3xl font-extrabold text-rose-600 block">00</span>
-                        <span class="text-xs text-slate-500 uppercase font-semibold">Horas</span>
+                    <div class="bg-rose-50/50 dark:bg-rose-950/20 p-2 rounded-xl border border-rose-100/50 dark:border-rose-900/30">
+                        <span id="timer-hours" class="text-2xl md:text-3xl font-extrabold text-rose-600 dark:text-rose-400 block drop-shadow-sm">00</span>
+                        <span class="text-[10px] md:text-xs text-slate-500 dark:text-slate-400 uppercase font-bold tracking-wider">Horas</span>
                     </div>
-                    <div class="bg-rose-50/50 p-2 rounded-xl">
-                        <span id="timer-minutes" class="text-2xl md:text-3xl font-extrabold text-rose-600 block">00</span>
-                        <span class="text-xs text-slate-500 uppercase font-semibold">Min</span>
+                    <div class="bg-rose-50/50 dark:bg-rose-950/20 p-2 rounded-xl border border-rose-100/50 dark:border-rose-900/30">
+                        <span id="timer-minutes" class="text-2xl md:text-3xl font-extrabold text-rose-600 dark:text-rose-400 block drop-shadow-sm">00</span>
+                        <span class="text-[10px] md:text-xs text-slate-500 dark:text-slate-400 uppercase font-bold tracking-wider">Min</span>
                     </div>
-                    <div class="bg-rose-50/50 p-2 rounded-xl">
-                        <span id="timer-seconds" class="text-2xl md:text-3xl font-extrabold text-rose-600 block">00</span>
-                        <span class="text-xs text-slate-500 uppercase font-semibold">Seg</span>
+                    <div class="bg-rose-50/50 dark:bg-rose-950/20 p-2 rounded-xl border border-rose-100/50 dark:border-rose-900/30">
+                        <span id="timer-seconds" class="text-2xl md:text-3xl font-extrabold text-rose-600 dark:text-rose-400 block drop-shadow-sm animate-pulse">00</span>
+                        <span class="text-[10px] md:text-xs text-slate-500 dark:text-slate-400 uppercase font-bold tracking-wider">Seg</span>
                     </div>
                 </div>
-                <p class="text-xs text-slate-400 mt-3">Segundos que se tornaram momentos favoritos.</p>
+                <p class="text-xs text-slate-400 dark:text-slate-500 mt-3 italic">Segundos sinceros que se transformaram em sorrisos diários.</p>
             </div>
             
-            <div class="absolute bottom-10 animate-bounce text-rose-400 flex flex-col items-center">
+            <div class="absolute bottom-10 animate-bounce text-rose-400 dark:text-rose-500 flex flex-col items-center">
                 <span class="text-xs font-semibold tracking-widest uppercase mb-1">Deslize para baixo</span>
                 <i data-lucide="chevron-down" class="w-6 h-6"></i>
             </div>
         </header>
 
-        <!-- SEÇÕES PRINCIPAIS -->
         <main class="space-y-24">
             
             <!-- LINHA DO TEMPO -->
             <section class="max-w-2xl mx-auto relative z-10 px-4">
-                <h2 class="text-3xl md:text-4xl font-bold text-center text-rose-600 mb-12 flex items-center justify-center gap-3 font-serif">
+                <h2 class="text-3xl md:text-4xl font-bold text-center text-rose-600 dark:text-rose-400 mb-12 flex items-center justify-center gap-3 font-serif">
                     <i data-lucide="calendar-heart" class="w-9 h-9"></i> Nossa Linha do Tempo
                 </h2>
-                <div class="space-y-8 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-rose-300 before:to-transparent">
+                <div class="space-y-8 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-rose-300 dark:before:via-rose-800 before:to-transparent">
                     
-                    <!-- Evento 1 -->
                     <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
-                        <div class="flex items-center justify-center w-10 h-10 rounded-full border-4 border-white bg-rose-400 text-white shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 shadow-lg z-10">
+                        <div class="flex items-center justify-center w-10 h-10 rounded-full border-4 border-white dark:border-slate-900 bg-rose-400 text-white shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 shadow-lg z-10">
                             <i data-lucide="heart" class="w-4 h-4 fill-current"></i>
                         </div>
-                        <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-white p-6 rounded-2xl shadow-xl hover:scale-105 transition-transform duration-300 border border-rose-100">
-                            <span class="text-xs font-bold uppercase tracking-wider text-rose-400">Há 2 meses</span>
-                            <h3 class="font-bold text-slate-800 text-lg mt-1 mb-2">A Primeira Conversa</h3>
-                            <p class="text-slate-600 leading-relaxed text-sm">O início de tudo. Uma notificação simples que, sem que eu soubesse, se transformaria na melhor rotina da minha vida.</p>
+                        <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-white dark:bg-slate-900/90 p-6 rounded-2xl shadow-xl hover:scale-105 transition-all duration-300 border border-rose-100 dark:border-rose-950/40">
+                            <span class="text-xs font-bold uppercase tracking-wider text-rose-400 dark:text-rose-500">Há 2 meses</span>
+                            <h3 class="font-bold text-slate-800 dark:text-white text-lg mt-1 mb-2">A Primeira Conversa</h3>
+                            <p class="text-slate-600 dark:text-slate-400 leading-relaxed text-sm">O início de tudo. Uma notificação simples que acendeu no telemóvel e que se transformaria na melhor rotina da minha vida.</p>
                         </div>
                     </div>
 
-                    <!-- Evento 2 -->
                     <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
-                        <div class="flex items-center justify-center w-10 h-10 rounded-full border-4 border-white bg-rose-400 text-white shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 shadow-lg z-10">
+                        <div class="flex items-center justify-center w-10 h-10 rounded-full border-4 border-white dark:border-slate-900 bg-rose-400 text-white shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 shadow-lg z-10">
                             <i data-lucide="heart" class="w-4 h-4 fill-current"></i>
                         </div>
-                        <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-white p-6 rounded-2xl shadow-xl hover:scale-105 transition-transform duration-300 border border-rose-100">
-                            <span class="text-xs font-bold uppercase tracking-wider text-rose-400">Semanas seguintes</span>
-                            <h3 class="font-bold text-slate-800 text-lg mt-1 mb-2">As Madrugadas Acordados</h3>
-                            <p class="text-slate-600 leading-relaxed text-sm">Conversas intermináveis sobre os assuntos mais aleatórios do mundo. Descobrir você foi como encontrar um lar.</p>
+                        <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-white dark:bg-slate-900/90 p-6 rounded-2xl shadow-xl hover:scale-105 transition-all duration-300 border border-rose-100 dark:border-rose-950/40">
+                            <span class="text-xs font-bold uppercase tracking-wider text-rose-400 dark:text-rose-500">Semanas seguintes</span>
+                            <h3 class="font-bold text-slate-800 dark:text-white text-lg mt-1 mb-2">As Madrugadas Acordados</h3>
+                            <p class="text-slate-600 dark:text-slate-400 leading-relaxed text-sm">Conversas intermináveis sobre os assuntos mais profundos do mundo. Descobrir os teus gostos foi como encontrar o meu próprio abrigo.</p>
                         </div>
                     </div>
 
-                    <!-- Evento 3 -->
                     <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
-                        <div class="flex items-center justify-center w-10 h-10 rounded-full border-4 border-white bg-rose-400 text-white shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 shadow-lg z-10">
+                        <div class="flex items-center justify-center w-10 h-10 rounded-full border-4 border-white dark:border-slate-900 bg-rose-400 text-white shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 shadow-lg z-10">
                             <i data-lucide="heart" class="w-4 h-4 fill-current"></i>
                         </div>
-                        <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-white p-6 rounded-2xl shadow-xl hover:scale-105 transition-transform duration-300 border border-rose-100">
-                            <span class="text-xs font-bold uppercase tracking-wider text-rose-400">O Sentimento Crescendo</span>
-                            <h3 class="font-bold text-slate-800 text-lg mt-1 mb-2">Mais que Amigos</h3>
-                            <p class="text-slate-600 leading-relaxed text-sm">A percepção de que a cada "bom dia" meu coração dava um pulo e que o seu sorriso passou a guiar o meu dia inteiro.</p>
-                        </div>
-                    </div>
-
-                    <!-- Evento 4 -->
-                    <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
-                        <div class="flex items-center justify-center w-10 h-10 rounded-full border-4 border-white bg-rose-400 text-white shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 shadow-lg z-10">
-                            <i data-lucide="heart" class="w-4 h-4 fill-current"></i>
-                        </div>
-                        <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-white p-6 rounded-2xl shadow-xl hover:scale-105 transition-transform duration-300 border border-rose-100">
-                            <span class="text-xs font-bold uppercase tracking-wider text-rose-400">Os Próximos Capítulos</span>
-                            <h3 class="font-bold text-slate-800 text-lg mt-1 mb-2">Ansiedades Boas</h3>
-                            <p class="text-slate-600 leading-relaxed text-sm">O primeiro abraço de verdade, o nosso primeiro beijo, a entrega oficial da aliança e aquele papo super respeitoso com a sua mãe.</p>
-                        </div>
-                    </div>
-
-                </div>
-            </section>
-
-            <!-- EXPECTATIVAS & IMAGENS -->
-            <section class="max-w-3xl mx-auto px-4 z-10 relative text-center">
-                <h2 class="text-3xl md:text-4xl font-bold text-rose-600 mb-4 flex items-center justify-center gap-3 font-serif">
-                    <i data-lucide="image" class="w-9 h-9"></i> Nossa Galeria Futura
-                </h2>
-                <p class="text-slate-600 mb-8 max-w-lg mx-auto text-sm">
-                    Ainda estamos a construir o nosso próprio álbum físico de fotos, mas vê as imagens que representam exatamente o que planeio viver contigo:
-                </p>
-                <div class="relative rounded-[2rem] overflow-hidden shadow-2xl bg-white p-3 border border-rose-100 max-w-xl mx-auto">
-                    <div class="relative aspect-[4/3] w-full rounded-2xl overflow-hidden bg-slate-50 flex items-center justify-center">
-                        <img id="gallery-img" src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Momentos felizes" class="w-full h-full object-cover">
-                        <div class="absolute inset-0 bg-black/45 flex items-end justify-center p-6">
-                            <p id="gallery-caption" class="text-white font-medium text-sm md:text-base max-w-md drop-shadow-md italic">
-                                "Mesmo sem fotos oficiais ainda, no meu pensamento já temos mil registros felizes juntos."
-                            </p>
-                        </div>
-                        <div class="absolute inset-x-2 top-1/2 -translate-y-1/2 flex justify-between">
-                            <button onclick="prevPhoto()" class="p-2 bg-white/30 hover:bg-white/50 backdrop-blur-sm rounded-full text-white transition-all transform hover:scale-115">
-                                <i data-lucide="chevron-left" class="w-6 h-6"></i>
-                            </button>
-                            <button onclick="nextPhoto()" class="p-2 bg-white/30 hover:bg-white/50 backdrop-blur-sm rounded-full text-white transition-all transform hover:scale-115">
-                                <i data-lucide="chevron-right" class="w-6 h-6"></i>
-                            </button>
+                        <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-white p-6 rounded-2xl shadow-xl hover:scale-105 transition-all duration-300 border border-rose-100 dark:border-rose-950/40">
+                            <span class="text-xs font-bold uppercase tracking-wider text-rose-400 dark:text-rose-500">O Sentimento Crescendo</span>
+                            <h3 class="font-bold text-slate-800 dark:text-white text-lg mt-1 mb-2">Mais que Amigos</h3>
+                            <p class="text-slate-600 dark:text-slate-400 leading-relaxed text-sm">A percepção doce de que o teu carinho passou a ser o farol que ilumina as minhas manhãs.</p>
                         </div>
                     </div>
                 </div>
@@ -229,162 +228,180 @@
 
             <!-- CAIXINHA DE RECADOS ALEATÓRIOS -->
             <section class="max-w-xl mx-auto px-4 z-10 relative">
-                <div class="bg-gradient-to-br from-white to-pink-50/50 p-8 rounded-[2rem] shadow-xl border border-rose-100 text-center">
-                    <i data-lucide="message-circle-heart" class="mx-auto text-rose-500 w-10 h-10 mb-4 animate-bounce"></i>
-                    <h3 class="text-xl font-bold text-slate-800 mb-2 font-serif">Um recado para cada sorriso</h3>
-                    <p class="text-sm text-slate-500 mb-6">Clica no botão abaixo para gerar uma mensagem carinhosa nova no ecrã!</p>
-                    <div class="bg-white p-5 rounded-2xl border border-rose-100 min-h-[90px] flex items-center justify-center mb-6">
-                        <p id="random-note" class="text-rose-600 font-medium text-base md:text-lg text-center">
+                <div class="bg-gradient-to-br from-white to-pink-50/50 dark:from-slate-900 dark:to-slate-900/50 p-8 rounded-[2rem] shadow-xl border border-rose-100 dark:border-rose-950/40 text-center glow-rose">
+                    <div class="relative inline-block mb-4">
+                        <i data-lucide="message-circle-heart" class="text-rose-500 w-10 h-10 animate-bounce"></i>
+                        <div class="absolute -inset-1 bg-rose-500/20 rounded-full blur animate-pulse"></div>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-800 dark:text-white mb-2 font-serif">Um recado para cada sorriso</h3>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mb-6">Clica no botão abaixo para gerar uma mensagem carinhosa nova no ecrã!</p>
+                    <div class="bg-white/90 dark:bg-slate-950/70 p-6 rounded-2xl border border-rose-100 dark:border-rose-900/30 min-h-[110px] flex items-center justify-center mb-6 shadow-inner transition-all duration-300">
+                        <p id="random-note" class="text-rose-600 dark:text-rose-400 font-medium text-base md:text-lg text-center leading-relaxed">
                             Você é o detalhe mais bonito dos meus últimos dois meses! 🥰
                         </p>
                     </div>
-                    <button onclick="generateNote()" class="bg-rose-100 hover:bg-rose-200 text-rose-700 font-bold py-2.5 px-6 rounded-full text-sm transition-all shadow-sm flex items-center gap-2 mx-auto">
+                    <button onclick="generateNote()" class="bg-rose-100 hover:bg-rose-200 dark:bg-rose-950/30 dark:hover:bg-rose-950/50 text-rose-700 dark:text-rose-300 font-bold py-3 px-8 rounded-full text-sm transition-all shadow-sm flex items-center gap-2 mx-auto hover:scale-105 active:scale-95">
                         <i data-lucide="sparkles" class="w-4 h-4"></i> Obter outro recado
                     </button>
                 </div>
             </section>
 
-            <!-- O QUE ME ENCANTA (CARTÕES QUE VIRAM) -->
-            <section class="max-w-5xl mx-auto px-4 z-10 relative">
-                <h2 class="text-3xl md:text-4xl font-bold text-center text-rose-600 mb-4 flex items-center justify-center gap-3 font-serif">
-                    <i data-lucide="sparkles" class="w-9 h-9"></i> Detalhes que Me Encantam
+            <!-- CUPÕES SINCRONIZADOS (BASE DE DADOS) -->
+            <section class="max-w-4xl mx-auto px-4 z-10 relative">
+                <h2 class="text-3xl md:text-4xl font-bold text-center text-rose-600 dark:text-rose-400 mb-4 flex items-center justify-center gap-3 font-serif">
+                    <i data-lucide="ticket" class="w-9 h-9"></i> Nossos Cupons de Encontros
                 </h2>
-                <p class="text-center text-slate-600 mb-10 max-w-md mx-auto text-sm">
-                    Mesmo nos conhecendo há apenas 2 meses, já descobri coisas incríveis em você. Passe o mouse ou toque nos cartões para revelar:
+                <p class="text-center text-slate-600 dark:text-slate-400 mb-2 max-w-md mx-auto text-sm">
+                    Estes cupões estão ligados em tempo real! Se resgatares, eu vou saber instantaneamente. ❤️
                 </p>
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                    
-                    <!-- Card 1 -->
-                    <div class="flip-card h-44 w-full perspective-1000 bg-transparent cursor-pointer">
-                        <div class="flip-card-inner relative w-full h-full text-center shadow-md rounded-2xl">
-                            <div class="flip-card-front absolute w-full h-full flex flex-col justify-center items-center bg-white border-2 border-rose-100 rounded-2xl text-rose-500 p-4">
-                                <i data-lucide="heart" class="mb-2 text-rose-400 fill-current w-7 h-7"></i>
-                                <h3 class="font-bold text-base md:text-lg text-slate-800">Seu "Bom Dia"</h3>
-                                <p class="text-xs mt-3 text-rose-300">Toque para ver ❤️</p>
+                <div class="flex justify-center mb-8">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                        Ligado à Base de Dados
+                    </span>
+                </div>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-2xl mx-auto">
+                    <!-- Cupom 1 -->
+                    <div id="coupon-1" onclick="redeemCoupon(1, 'Abraço Interminável')" class="bg-white dark:bg-slate-900 border-2 border-dashed border-rose-300 dark:border-rose-950/70 p-6 rounded-2xl relative overflow-hidden cursor-pointer shadow-md hover:scale-105 transition-all duration-300 glow-rose group">
+                        <div class="absolute -right-4 -top-4 w-12 h-12 bg-rose-50 dark:bg-slate-950 rounded-full border-2 border-dashed border-rose-300 dark:border-rose-950/70"></div>
+                        <div class="absolute -left-4 -bottom-4 w-12 h-12 bg-rose-50 dark:bg-slate-950 rounded-full border-2 border-dashed border-rose-300 dark:border-rose-950/70"></div>
+                        <div class="flex items-start gap-4">
+                            <div class="bg-rose-100 dark:bg-rose-950/40 p-3 rounded-xl text-rose-600 dark:text-rose-400 shrink-0">
+                                <i data-lucide="heart-handshake" class="w-6 h-6"></i>
                             </div>
-                            <div class="flip-card-back absolute w-full h-full flex justify-center items-center bg-gradient-to-br from-rose-400 to-pink-500 text-white rounded-2xl p-6">
-                                <p class="text-sm md:text-base font-medium leading-relaxed">Saber que sou uma das suas prioridades do dia muda completamente o meu humor e as minhas manhãs.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Card 2 -->
-                    <div class="flip-card h-44 w-full perspective-1000 bg-transparent cursor-pointer">
-                        <div class="flip-card-inner relative w-full h-full text-center shadow-md rounded-2xl">
-                            <div class="flip-card-front absolute w-full h-full flex flex-col justify-center items-center bg-white border-2 border-rose-100 rounded-2xl text-rose-500 p-4">
-                                <i data-lucide="heart" class="mb-2 text-rose-400 fill-current w-7 h-7"></i>
-                                <h3 class="font-bold text-base md:text-lg text-slate-800">Nossa Sintonia</h3>
-                                <p class="text-xs mt-3 text-rose-300">Toque para ver ❤️</p>
-                            </div>
-                            <div class="flip-card-back absolute w-full h-full flex justify-center items-center bg-gradient-to-br from-rose-400 to-pink-500 text-white rounded-2xl p-6">
-                                <p class="text-sm md:text-base font-medium leading-relaxed">A facilidade com que conversamos sobre tudo. Parece que nos conhecemos há anos inteiros!</p>
+                            <div>
+                                <h3 class="font-bold text-slate-800 dark:text-white text-base">Abraço Interminável</h3>
+                                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Dá direito a um abraço super apertado de quantos minutos tu quiseres.</p>
+                                <span id="coupon-status-1" class="inline-block mt-3 text-xs font-bold text-rose-500 dark:text-rose-400 group-hover:underline">Resgatar Cupom 🎟️</span>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Card 3 -->
-                    <div class="flip-card h-44 w-full perspective-1000 bg-transparent cursor-pointer">
-                        <div class="flip-card-inner relative w-full h-full text-center shadow-md rounded-2xl">
-                            <div class="flip-card-front absolute w-full h-full flex flex-col justify-center items-center bg-white border-2 border-rose-100 rounded-2xl text-rose-500 p-4">
-                                <i data-lucide="heart" class="mb-2 text-rose-400 fill-current w-7 h-7"></i>
-                                <h3 class="font-bold text-base md:text-lg text-slate-800">Seu Carinho</h3>
-                                <p class="text-xs mt-3 text-rose-300">Toque para ver ❤️</p>
+                    <!-- Cupom 2 -->
+                    <div id="coupon-2" onclick="redeemCoupon(2, 'Tarde de Filmes e Pipoca')" class="bg-white dark:bg-slate-900 border-2 border-dashed border-rose-300 dark:border-rose-950/70 p-6 rounded-2xl relative overflow-hidden cursor-pointer shadow-md hover:scale-105 transition-all duration-300 glow-rose group">
+                        <div class="absolute -right-4 -top-4 w-12 h-12 bg-rose-50 dark:bg-slate-950 rounded-full border-2 border-dashed border-rose-300 dark:border-rose-950/70"></div>
+                        <div class="absolute -left-4 -bottom-4 w-12 h-12 bg-rose-50 dark:bg-slate-950 rounded-full border-2 border-dashed border-rose-300 dark:border-rose-950/70"></div>
+                        <div class="flex items-start gap-4">
+                            <div class="bg-rose-100 dark:bg-rose-950/40 p-3 rounded-xl text-rose-600 dark:text-rose-400 shrink-0">
+                                <i data-lucide="popcorn" class="w-6 h-6"></i>
                             </div>
-                            <div class="flip-card-back absolute w-full h-full flex justify-center items-center bg-gradient-to-br from-rose-400 to-pink-500 text-white rounded-2xl p-6">
-                                <p class="text-sm md:text-base font-medium leading-relaxed">Sua doçura ao falar comigo e como você demonstra se importar com cada pequeno detalhe meu.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Card 4 -->
-                    <div class="flip-card h-44 w-full perspective-1000 bg-transparent cursor-pointer">
-                        <div class="flip-card-inner relative w-full h-full text-center shadow-md rounded-2xl">
-                            <div class="flip-card-front absolute w-full h-full flex flex-col justify-center items-center bg-white border-2 border-rose-100 rounded-2xl text-rose-500 p-4">
-                                <i data-lucide="heart" class="mb-2 text-rose-400 fill-current w-7 h-7"></i>
-                                <h3 class="font-bold text-base md:text-lg text-slate-800">O Frio na Barriga</h3>
-                                <p class="text-xs mt-3 text-rose-300">Toque para ver ❤️</p>
-                            </div>
-                            <div class="flip-card-back absolute w-full h-full flex justify-center items-center bg-gradient-to-br from-rose-400 to-pink-500 text-white rounded-2xl p-6">
-                                <p class="text-sm md:text-base font-medium leading-relaxed">A sensação indescritível de ver o seu nome brilhando na tela do meu celular e o coração acelerar.</p>
+                            <div>
+                                <h3 class="font-bold text-slate-800 dark:text-white text-base">Tarde de Filmes</h3>
+                                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Dá direito a maratonarmos as tuas séries preferidas.</p>
+                                <span id="coupon-status-2" class="inline-block mt-3 text-xs font-bold text-rose-500 dark:text-rose-400 group-hover:underline">Resgatar Cupom 🎟️</span>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Card 5 -->
-                    <div class="flip-card h-44 w-full perspective-1000 bg-transparent cursor-pointer">
-                        <div class="flip-card-inner relative w-full h-full text-center shadow-md rounded-2xl">
-                            <div class="flip-card-front absolute w-full h-full flex flex-col justify-center items-center bg-white border-2 border-rose-100 rounded-2xl text-rose-500 p-4">
-                                <i data-lucide="heart" class="mb-2 text-rose-400 fill-current w-7 h-7"></i>
-                                <h3 class="font-bold text-base md:text-lg text-slate-800">Seu Apoio</h3>
-                                <p class="text-xs mt-3 text-rose-300">Toque para ver ❤️</p>
+                    <!-- Cupom 3 -->
+                    <div id="coupon-3" onclick="redeemCoupon(3, 'Rodada de Sorvete')" class="bg-white dark:bg-slate-900 border-2 border-dashed border-rose-300 dark:border-rose-950/70 p-6 rounded-2xl relative overflow-hidden cursor-pointer shadow-md hover:scale-105 transition-all duration-300 glow-rose group">
+                        <div class="absolute -right-4 -top-4 w-12 h-12 bg-rose-50 dark:bg-slate-950 rounded-full border-2 border-dashed border-rose-300 dark:border-rose-950/70"></div>
+                        <div class="absolute -left-4 -bottom-4 w-12 h-12 bg-rose-50 dark:bg-slate-950 rounded-full border-2 border-dashed border-rose-300 dark:border-rose-950/70"></div>
+                        <div class="flex items-start gap-4">
+                            <div class="bg-rose-100 dark:bg-rose-950/40 p-3 rounded-xl text-rose-600 dark:text-rose-400 shrink-0">
+                                <i data-lucide="ice-cream" class="w-6 h-6"></i>
                             </div>
-                            <div class="flip-card-back absolute w-full h-full flex justify-center items-center bg-gradient-to-br from-rose-400 to-pink-500 text-white rounded-2xl p-6">
-                                <p class="text-sm md:text-base font-medium leading-relaxed">A forma como você me ouve, apoia os meus planos e celebra cada detalhe positivo comigo.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Card 6 (Apoio e Espaço) -->
-                    <div class="flip-card h-44 w-full perspective-1000 bg-transparent cursor-pointer">
-                        <div class="flip-card-inner relative w-full h-full text-center shadow-md rounded-2xl">
-                            <div class="flip-card-front absolute w-full h-full flex flex-col justify-center items-center bg-white border-2 border-rose-100 rounded-2xl text-rose-500 p-4">
-                                <i data-lucide="shield-check" class="mb-2 text-rose-400 fill-current w-7 h-7"></i>
-                                <h3 class="font-bold text-base md:text-lg text-slate-800">Seu Tempo</h3>
-                                <p class="text-xs mt-3 text-rose-300">Toque para ver ❤️</p>
-                            </div>
-                            <div class="flip-card-back absolute w-full h-full flex justify-center items-center bg-gradient-to-br from-rose-400 to-pink-500 text-white rounded-2xl p-6">
-                                <p class="text-sm md:text-base font-medium leading-relaxed">Respeito muito o seu ritmo e o seu espaço. Quero que você se sinta totalmente protegida, segura e amada ao meu lado, sem pressa.</p>
+                            <div>
+                                <h3 class="font-bold text-slate-800 dark:text-white text-base">Rodada de Sorvete</h3>
+                                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Dá direito a irmos tomar o teu sorvete preferido por minha conta.</p>
+                                <span id="coupon-status-3" class="inline-block mt-3 text-xs font-bold text-rose-500 dark:text-rose-400 group-hover:underline">Resgatar Cupom 🎟️</span>
                             </div>
                         </div>
                     </div>
 
+                    <!-- Cupom 4 -->
+                    <div id="coupon-4" onclick="redeemCoupon(4, 'Passeio sob as Estrelas')" class="bg-white dark:bg-slate-900 border-2 border-dashed border-rose-300 dark:border-rose-950/70 p-6 rounded-2xl relative overflow-hidden cursor-pointer shadow-md hover:scale-105 transition-all duration-300 glow-rose group">
+                        <div class="absolute -right-4 -top-4 w-12 h-12 bg-rose-50 dark:bg-slate-950 rounded-full border-2 border-dashed border-rose-300 dark:border-rose-950/70"></div>
+                        <div class="absolute -left-4 -bottom-4 w-12 h-12 bg-rose-50 dark:bg-slate-950 rounded-full border-2 border-dashed border-rose-300 dark:border-rose-950/70"></div>
+                        <div class="flex items-start gap-4">
+                            <div class="bg-rose-100 dark:bg-rose-950/40 p-3 rounded-xl text-rose-600 dark:text-rose-400 shrink-0">
+                                <i data-lucide="sunset" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-slate-800 dark:text-white text-base">Passeio Calmo</h3>
+                                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Dá direito a caminharmos de mãos dadas, no teu ritmo e no teu tempo.</p>
+                                <span id="coupon-status-4" class="inline-block mt-3 text-xs font-bold text-rose-500 dark:text-rose-400 group-hover:underline">Resgatar Cupom 🎟️</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- NOVO MURAL DE RECADOS EM TEMPO REAL -->
+            <section class="max-w-3xl mx-auto px-4 z-10 relative">
+                <div class="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md p-6 md:p-10 rounded-[2.5rem] shadow-2xl border border-rose-100 dark:border-rose-950/50 glow-rose">
+                    <h2 class="text-2xl md:text-3xl font-bold text-rose-600 dark:text-rose-400 mb-2 flex items-center justify-center gap-3 font-serif">
+                        <i data-lucide="message-square-heart" class="w-8 h-8"></i> Mural do Amor
+                    </h2>
+                    <p class="text-center text-slate-500 dark:text-slate-400 mb-8 text-sm">
+                        Um espaço nosso partilhado. Deixa uma mensagem aqui e eu verei em tempo real!
+                    </p>
+
+                    <!-- Lista de Mensagens (Carregadas da Base de Dados) -->
+                    <div id="messages-wall-scroll" class="h-64 overflow-y-auto custom-scroll mb-6 p-4 bg-slate-50 dark:bg-slate-950/50 rounded-2xl border border-slate-100 dark:border-slate-800 flex flex-col gap-3">
+                        <div class="flex justify-center h-full items-center">
+                            <span class="text-slate-400 text-sm italic">A carregar o nosso mural...</span>
+                        </div>
+                    </div>
+
+                    <!-- Input para nova mensagem -->
+                    <div class="flex gap-2">
+                        <input type="text" id="message-input" placeholder="Escreve um recadinho aqui..." class="flex-1 bg-white dark:bg-slate-800 border border-rose-200 dark:border-rose-900/50 rounded-full px-5 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-rose-400 dark:text-white transition-all shadow-inner">
+                        <button onclick="sendMessage()" class="bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 text-white rounded-full p-3 shadow-md hover:scale-105 active:scale-95 transition-all flex items-center justify-center">
+                            <i data-lucide="send-horizontal" class="w-5 h-5"></i>
+                        </button>
+                    </div>
                 </div>
             </section>
 
             <!-- CARTA DE AMOR -->
             <section class="max-w-3xl mx-auto px-4 z-10 relative">
-                <div class="bg-white/95 backdrop-blur-md p-8 md:p-12 rounded-3xl shadow-2xl border-t-8 border-rose-500 relative">
-                    <i data-lucide="heart" class="absolute -top-8 left-1/2 -translate-x-1/2 text-rose-500 fill-current w-16 h-16 bg-rose-50 rounded-full p-2 shadow-lg"></i>
-                    <h2 class="text-2xl md:text-3xl font-bold text-slate-800 mb-6 text-center mt-4 font-serif">Para o meu Amor ❤️,</h2>
-                    <div class="space-y-4 text-slate-700 text-base md:text-lg leading-relaxed font-sans">
-                        <p>Faz cerca de dois meses que você entrou na minha vida e, de verdade, tudo ficou muito mais alegre desde então. Quem diria que uma conversa simples se transformaria na melhor parte de todos os meus dias?</p>
-                        <p>Quero que você saiba que, além de namorado, eu quero ser o seu lugar seguro no mundo inteiro. Sei que existem dias mais cinzentos ou difíceis, e o meu único objetivo de verdade é estar lá para te apoiar, te ouvir e respeitar sempre o seu tempo, o seu ritmo e o seu espaço. Não tenho nenhuma pressa, pois sei que o que estamos construindo é lindo e verdadeiro.</p>
+                <div class="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md p-8 md:p-12 rounded-3xl shadow-2xl border-t-8 border-rose-500 dark:border-rose-600 relative glow-rose transition-colors duration-500">
+                    <i data-lucide="heart" class="absolute -top-8 left-1/2 -translate-x-1/2 text-rose-500 dark:text-rose-400 fill-current w-16 h-16 bg-rose-50 dark:bg-slate-950 rounded-full p-2 shadow-lg transition-colors duration-500"></i>
+                    <h2 class="text-2xl md:text-3xl font-bold text-slate-800 dark:text-white mb-6 text-center mt-4 font-serif">Para o meu Amor ❤️,</h2>
+                    <div class="space-y-4 text-slate-700 dark:text-slate-300 text-base md:text-lg leading-relaxed font-sans">
+                        <p>Faz cerca de dois meses que você entrou na minha vida e tudo ficou muito mais alegre desde então. Quem diria que uma conversa simples se transformaria na melhor parte dos meus dias?</p>
+                        <p>Quero que você saiba que quero ser o seu lugar seguro no mundo inteiro. Sei que existem dias mais cinzentos, e o meu único objetivo é estar lá para te apoiar, te ouvir e respeitar sempre o seu tempo, o seu ritmo e o seu espaço. Não tenho nenhuma pressa, pois sei que o que estamos construindo é lindo.</p>
                         <p>Eu fico imaginando o dia em que vou finalmente te ver, te dar aquele abraço bem aconchegante, conversar com a sua mãe (prometo que vou me esforçar para não ficar gaguejando de nervoso! rs), segurar a sua mão e dar o nosso primeiro passo com calma.</p>
-                        <p>Quero construir uma história de muito carinho, respeito mútuo, diversão e cumplicidade com você. Obrigado por ser essa pessoa tão incrível nesses últimos 2 meses. Esse é apenas o primeiro capítulo da nossa história.</p>
-                        <p class="font-bold text-rose-600 text-right mt-8 text-xl">Com todo o meu carinho,</p>
-                        <p id="signature-text" class="text-right text-slate-800 font-bold text-xl italic">Lipe</p>
+                        <p>Obrigado por ser essa pessoa tão incrível nesses últimos 2 meses. Esse é apenas o primeiro capítulo da nossa história.</p>
+                        <p class="font-bold text-rose-600 dark:text-rose-400 text-right mt-8 text-xl">Com todo o meu carinho,</p>
+                        <p id="signature-text" class="text-right text-slate-800 dark:text-white font-bold text-xl italic">Lipe</p>
                     </div>
                 </div>
             </section>
 
             <!-- PEDIDO DE NAMORO INTERATIVO -->
             <section class="max-w-md mx-auto px-4 z-10 relative">
-                <div id="proposal-box" class="bg-gradient-to-br from-white to-rose-50 p-8 rounded-[2.5rem] shadow-2xl border-2 border-rose-100 text-center relative overflow-hidden">
+                <div id="proposal-box" class="bg-gradient-to-br from-white to-rose-50/50 dark:from-slate-900 dark:to-slate-900/50 p-8 rounded-[2.5rem] shadow-2xl border-2 border-rose-100 dark:border-rose-950/60 text-center relative overflow-hidden glow-rose">
                     <div id="proposal-active">
-                        <i data-lucide="gift" class="mx-auto text-rose-500 animate-bounce w-12 h-12 mb-4"></i>
-                        <h2 class="text-2xl md:text-3xl font-bold text-slate-800 mb-2 font-serif">Uma perguntinha importante...</h2>
-                        <p class="text-slate-600 text-sm md:text-base mb-8">
+                        <div class="relative inline-block mb-4">
+                            <i data-lucide="gift" class="text-rose-500 animate-bounce w-12 h-12"></i>
+                            <div class="absolute -inset-1 bg-rose-500/20 rounded-full blur animate-pulse"></div>
+                        </div>
+                        <h2 class="text-2xl md:text-3xl font-bold text-slate-800 dark:text-white mb-2 font-serif">Uma perguntinha importante...</h2>
+                        <p class="text-slate-600 dark:text-slate-400 text-sm md:text-base mb-8">
                             Sei que ainda temos o abraço para dar, o beijo para dar e o papo com a sua mãe... mas já queria ensaiar o passo principal:
                         </p>
                         <p class="text-xl md:text-2xl font-extrabold text-rose-600 mb-8 leading-snug">
                             Você aceita namorar comigo quando a aliança chegar? 🥰
                         </p>
                         <div class="flex flex-col sm:flex-row items-center justify-center gap-4 relative min-h-[120px]">
-                            <button onclick="acceptProposal()" class="bg-gradient-to-r from-rose-500 to-pink-500 text-white font-bold py-3 px-8 rounded-full shadow-lg hover:scale-110 active:scale-95 transition-transform text-lg z-10">
+                            <button onclick="acceptProposal()" class="bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 text-white font-bold py-3.5 px-8 rounded-full shadow-lg hover:scale-110 active:scale-95 transition-all text-lg z-10">
                                 Sim! Mil vezes sim! 💍
                             </button>
-                            <button id="btn-no" onmouseenter="moveNoBtn()" onclick="moveNoBtn()" class="bg-slate-200 text-slate-600 font-semibold py-2 px-6 rounded-full text-sm hover:bg-slate-300 absolute sm:static transition-all duration-150">
+                            <button id="btn-no" onmouseenter="moveNoBtn()" onclick="moveNoBtn()" class="bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-semibold py-2.5 px-6 rounded-full text-sm hover:bg-slate-300 dark:hover:bg-slate-700 absolute sm:static transition-all duration-150 shadow-sm border border-slate-300/50 dark:border-slate-700/50">
                                 Não...
                             </button>
                         </div>
                     </div>
                     
-                    <div id="proposal-accepted" class="hidden">
-                        <i data-lucide="heart" class="mx-auto text-rose-500 fill-current animate-pulse w-16 h-16 mb-4"></i>
-                        <h2 class="text-3xl font-bold text-rose-600 mb-4 font-serif">Ebaaaa! ❤️</h2>
-                        <p class="text-slate-700 font-medium text-lg mb-6">Você acabou de me deixar com o maior sorriso do mundo!</p>
-                        <p class="text-slate-500 text-sm leading-relaxed">
-                            Considere isso como nossa "promessa" oficial firmada. Agora deixa comigo que eu cuido de comprar as alianças mais lindas, preparar o pedido presencial e todo o resto do nosso plano! 🥰
+                    <div id="proposal-accepted" class="hidden animate-pulse-slow">
+                        <i data-lucide="heart" class="mx-auto text-rose-500 fill-current w-16 h-16 mb-4"></i>
+                        <h2 class="text-3xl font-bold text-rose-600 dark:text-rose-400 mb-4 font-serif">Ebaaaa! ❤️</h2>
+                        <p class="text-slate-700 dark:text-slate-200 font-medium text-lg mb-6">Você acabou de me deixar com o maior sorriso do mundo!</p>
+                        <p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">
+                            Agora deixa comigo que eu cuido de comprar as alianças mais lindas, preparar o pedido presencial e todo o resto do nosso plano! 🥰
                         </p>
                     </div>
                 </div>
@@ -393,24 +410,165 @@
         </main>
 
         <!-- RODAPÉ -->
-        <footer class="bg-rose-500 text-white text-center py-6 mt-16 relative z-10">
+        <footer class="bg-rose-500 dark:bg-slate-900 border-t border-rose-400/20 text-white text-center py-6 mt-16 relative z-10 transition-colors duration-500">
             <p id="footer-text" class="flex items-center justify-center gap-2 text-sm font-medium">
-                Feito com carinho para [Nome dela aqui]
+                Feito com carinho para Meu Amor ❤️
             </p>
         </footer>
     </div>
 
-    <!-- SCRIPT DE LÓGICA E INTERAÇÕES -->
-    <script>
-        // Inicializa os ícones do Lucide
-        lucide.createIcons();
+    <!-- SCRIPT DE LÓGICA GERAL E FIREBASE (BASE DE DADOS) -->
+    <script type="module">
+        // Importações do Firebase SDK para Base de Dados Realtime
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, doc, setDoc, onSnapshot, addDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // 1. Aplica as variáveis de configuração rápida nos elementos visuais do site
+        // Configurações Locais
+        const CONFIG = {
+            nomeDela: "Meu Amor ❤️",
+            seuNome: "Lipe",
+            dataInicio: new Date(2026, 4, 2, 14, 0, 0), 
+            musicaUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
+        };
+
         document.getElementById('header-nome-dela').innerText = CONFIG.nomeDela;
         document.getElementById('signature-text').innerText = CONFIG.seuNome;
         document.getElementById('footer-text').innerText = `Feito com carinho para ${CONFIG.nomeDela}`;
 
-        // 2. Criar corações flutuantes decorativos no fundo
+        lucide.createIcons();
+
+        // Variáveis globais do Firebase
+        let db, auth, currentUser;
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'love-app';
+
+        // 1. INICIALIZAR BASE DE DADOS (FIREBASE)
+        async function initFirebase() {
+            if (typeof __firebase_config === 'undefined') {
+                console.log("A executar sem base de dados configurada localmente.");
+                return;
+            }
+            try {
+                const firebaseConfig = JSON.parse(__firebase_config);
+                const app = initializeApp(firebaseConfig);
+                auth = getAuth(app);
+                db = getFirestore(app);
+
+                // Autenticação Segura exigida pela base de dados
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+
+                onAuthStateChanged(auth, (user) => {
+                    if (user) {
+                        currentUser = user;
+                        setupRealtimeListeners();
+                    }
+                });
+            } catch (e) {
+                console.error("Erro ao inicializar Firebase", e);
+            }
+        }
+
+        // 2. ESCUTAR MUDANÇAS EM TEMPO REAL
+        function setupRealtimeListeners() {
+            if (!currentUser) return;
+
+            // Escutar Cupões Resgatados
+            onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'coupons'), (snapshot) => {
+                snapshot.forEach(doc => {
+                    if (doc.data().redeemed) {
+                        updateCouponUI(doc.id);
+                    }
+                });
+            }, (error) => console.error("Erro cupons:", error));
+
+            // Escutar Mensagens do Mural
+            onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'messages'), (snapshot) => {
+                const msgs = [];
+                snapshot.forEach(doc => msgs.push({ id: doc.id, ...doc.data() }));
+                // Ordena por data mais antiga primeiro
+                msgs.sort((a, b) => a.timestamp - b.timestamp);
+                renderMessages(msgs);
+            }, (error) => console.error("Erro mensagens:", error));
+        }
+
+        // 3. RENDERIZAR MENSAGENS DO MURAL
+        function renderMessages(msgs) {
+            const container = document.getElementById('messages-wall-scroll');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            if(msgs.length === 0) {
+                container.innerHTML = '<div class="flex justify-center h-full items-center"><span class="text-slate-400 text-sm italic">Sê o primeiro a escrever um recadinho!</span></div>';
+                return;
+            }
+
+            msgs.forEach(msg => {
+                const div = document.createElement('div');
+                div.className = "bg-rose-50 dark:bg-slate-800/80 p-3 rounded-2xl rounded-tl-none border border-rose-100 dark:border-slate-700 shadow-sm text-left w-full max-w-sm mr-auto break-words";
+                div.innerHTML = `<p class="text-slate-700 dark:text-slate-200 text-sm leading-relaxed">${msg.text}</p>`;
+                container.appendChild(div);
+            });
+            container.scrollTop = container.scrollHeight;
+        }
+
+        // 4. FUNÇÕES GLOBAIS (Expostas para o HTML)
+        window.sendMessage = async function() {
+            const input = document.getElementById('message-input');
+            const text = input.value.trim();
+            if (!text || !auth || !currentUser) return;
+            
+            input.value = ''; // Limpa logo para feedback rápido
+            
+            try {
+                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'messages'), {
+                    text: text,
+                    timestamp: Date.now()
+                });
+            } catch (e) {
+                console.error("Erro a enviar mensagem", e);
+            }
+        };
+
+        const redeemedCouponsLocal = {};
+        window.redeemCoupon = async function(id, nomeCupom) {
+            if (redeemedCouponsLocal[id]) return;
+            
+            // Se não houver DB, faz apenas local
+            if (!auth || !currentUser) {
+                updateCouponUI(id);
+                return;
+            }
+
+            try {
+                await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'coupons', id.toString()), {
+                    redeemed: true,
+                    name: nomeCupom,
+                    timestamp: Date.now()
+                });
+            } catch (e) {
+                console.error("Erro a resgatar cupão", e);
+            }
+        };
+
+        function updateCouponUI(id) {
+            redeemedCouponsLocal[id] = true;
+            const couponCard = document.getElementById(`coupon-${id}`);
+            const statusText = document.getElementById(`coupon-status-${id}`);
+            if(!couponCard) return;
+
+            couponCard.classList.remove('glow-rose', 'hover:scale-105');
+            couponCard.classList.add('scale-95', 'opacity-75', 'bg-rose-50/70', 'dark:bg-slate-950/80', 'border-rose-400', 'dark:border-rose-600');
+            statusText.innerHTML = `<span class="text-rose-600 dark:text-rose-400 font-extrabold flex items-center gap-1"><i data-lucide="check-circle" class="w-4 h-4 inline"></i> RESGATADO ❤️</span>`;
+            lucide.createIcons();
+        }
+
+        // --- Restante Lógica de UI ---
+        
+        // Corações de fundo
         const container = document.getElementById('heart-container');
         for (let i = 0; i < 25; i++) {
             const heart = document.createElement('div');
@@ -423,22 +581,12 @@
             container.appendChild(heart);
         }
 
-        // 3. Controle e reprodução de som segura contra rejeições não tratadas do navegador
         const audio = document.getElementById('bg-music');
         let isPlaying = false;
+        if (CONFIG.musicaUrl) { audio.src = CONFIG.musicaUrl; audio.load(); }
+        audio.addEventListener('error', function(e) { console.warn("Erro de áudio:", e); });
 
-        // Inicialização preventiva da origem do áudio para evitar erros de elemento sem fonte suportada
-        if (CONFIG.musicaUrl) {
-            audio.src = CONFIG.musicaUrl;
-            audio.load();
-        }
-
-        // Trata erros de carregamento do ficheiro de áudio de forma silenciosa e amigável
-        audio.addEventListener('error', function(e) {
-            console.warn("Ficheiro de áudio não suportado ou bloqueado temporariamente:", e);
-        });
-
-        function toggleMusic() {
+        window.toggleMusic = function() {
             const icon = document.getElementById('music-icon');
             if (isPlaying) {
                 audio.pause();
@@ -447,32 +595,40 @@
                 icon.classList.remove('animate-pulse');
                 lucide.createIcons();
             } else {
-                // Executa a reprodução garantindo sincronização do estado apenas sob sucesso
                 audio.play().then(() => {
                     isPlaying = true;
                     icon.setAttribute('data-lucide', 'volume-2');
                     icon.classList.add('animate-pulse');
                     lucide.createIcons();
-                }).catch(err => {
-                    console.warn("Reprodução de áudio impedida ou falhou:", err);
+                }).catch(() => {
                     isPlaying = false;
-                    icon.setAttribute('data-lucide', 'volume-x');
-                    icon.classList.remove('animate-pulse');
-                    lucide.createIcons();
                 });
             }
-        }
+        };
 
-        // 4. Iniciar App na tela de boas-vindas
-        function startApp() {
+        window.toggleTheme = function() {
+            const htmlElement = document.documentElement;
+            const sun = document.getElementById('theme-sun');
+            const moon = document.getElementById('theme-moon');
+
+            if (htmlElement.classList.contains('dark')) {
+                htmlElement.classList.remove('dark');
+                moon.className = "absolute transition-all duration-500 transform translate-y-14 opacity-0 flex items-center justify-center";
+                sun.className = "absolute transition-all duration-500 transform translate-y-0 opacity-100 flex items-center justify-center";
+            } else {
+                htmlElement.classList.add('dark');
+                sun.className = "absolute transition-all duration-500 transform translate-y-14 opacity-0 flex items-center justify-center";
+                moon.className = "absolute transition-all duration-500 transform translate-y-0 opacity-100 flex items-center justify-center";
+            }
+        };
+
+        window.startApp = function() {
             document.getElementById('welcome-screen').classList.add('hidden');
             document.getElementById('main-content').classList.remove('hidden');
             
-            // Inicia o contador de tempo regressivo/progressivo
             setInterval(updateTimer, 1000);
             updateTimer();
 
-            // Executa a reprodução inicial de forma totalmente segura
             if (CONFIG.musicaUrl) {
                 audio.play().then(() => {
                     isPlaying = true;
@@ -482,17 +638,12 @@
                         icon.classList.add('animate-pulse');
                         lucide.createIcons();
                     }
-                }).catch(err => {
-                    console.warn("A reprodução automática de áudio foi impedida pelo navegador:", err);
-                    isPlaying = false;
-                });
+                }).catch(() => isPlaying = false);
             }
-        }
+        };
 
-        // 5. Atualização em tempo real do contador de relacionamento
         function updateTimer() {
             const diff = new Date() - CONFIG.dataInicio;
-            
             const days = Math.floor(diff / (1000 * 60 * 60 * 24));
             const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
             const minutes = Math.floor((diff / 1000 / 60) % 60);
@@ -504,83 +655,49 @@
             document.getElementById('timer-seconds').innerText = seconds.toString().padStart(2, '0');
         }
 
-        // 6. Lista de recados fofos aleatórios para o mural interativo
         const cuteNotes = [
             "Você é o detalhe mais bonito dos meus últimos dois meses! 🥰",
-            "Não vejo a hora de te dar aquele abraço bem aconchegante e te fazer sorrir. 🤗",
-            "Obrigado por deixar minhas conversas tão leves e o meu dia tão especial.",
-            "Nos dias cinzentos, eu vou estar aqui bem pertinho, segurando a sua mão e te ouvindo. ❤️",
-            "Seu tempo é o meu tempo. Não tenho pressa de nada, só tenho pressa de te ver bem.",
-            "Quero ser o seu porto seguro, o lugar onde você pode descansar e sorrir sem nenhum receio. 🛡️✨",
+            "Não vejo a hora de te dar aquele abraço bem aconchegante. 🤗",
+            "Obrigado por deixar minhas conversas tão leves.",
+            "Nos dias cinzentos, eu vou estar aqui bem pertinho.",
+            "Seu tempo é o meu tempo. Só tenho pressa de te ver bem.",
+            "Quero ser o seu porto seguro sempre. 🛡️✨",
             "Prometo escolher as alianças mais fofas desse mundo para nós dois. 💍",
-            "Seu sorriso é simplesmente a coisa mais preciosa de todas! 😍",
-            "Sinto que esses 2 meses são só as primeiras páginas da nossa linda história com calma e respeito."
+            "Seu sorriso é simplesmente a coisa mais preciosa de todas! 😍"
         ];
-        
         let lastNoteIndex = 0;
-        function generateNote() {
+        window.generateNote = function() {
             let nextIndex;
-            do {
-                nextIndex = Math.floor(Math.random() * cuteNotes.length);
-            } while (nextIndex === lastNoteIndex);
-            
+            do { nextIndex = Math.floor(Math.random() * cuteNotes.length); } while (nextIndex === lastNoteIndex);
             lastNoteIndex = nextIndex;
             const noteEl = document.getElementById('random-note');
             noteEl.style.opacity = 0;
-            setTimeout(() => {
-                noteEl.innerText = cuteNotes[lastNoteIndex];
-                noteEl.style.opacity = 1;
-            }, 150);
-        }
+            setTimeout(() => { noteEl.innerText = cuteNotes[lastNoteIndex]; noteEl.style.opacity = 1; }, 150);
+        };
 
-        // 7. Lógica da galeria de fotos representativa
-        const photos = [
-            {
-                url: "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-                caption: "Mesmo sem fotos oficiais ainda, no meu pensamento já temos mil registros felizes juntos."
-            },
-            {
-                url: "https://images.unsplash.com/photo-1518199266791-5375a83190b7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-                caption: "Mal posso esperar pelo dia em que tiraremos nossa primeira foto oficial de namorados!"
-            },
-            {
-                url: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-                caption: "Cada detalhe que conheço de você me faz querer viver cada novo capítulo do nosso futuro."
-            }
-        ];
-        let currentPhotoIndex = 0;
-
-        function updateGallery() {
-            document.getElementById('gallery-img').src = photos[currentPhotoIndex].url;
-            document.getElementById('gallery-caption').innerText = `"${photos[currentPhotoIndex].caption}"`;
-        }
-        function nextPhoto() {
-            currentPhotoIndex = (currentPhotoIndex + 1) % photos.length;
-            updateGallery();
-        }
-        function prevPhoto() {
-            currentPhotoIndex = (currentPhotoIndex - 1 + photos.length) % photos.length;
-            updateGallery();
-        }
-
-        // 8. Lógica divertida para desviar e fugir do botão "Não"
         let attempts = 0;
-        function moveNoBtn() {
+        window.moveNoBtn = function() {
             const btn = document.getElementById('btn-no');
             const randomX = Math.random() * 220 - 110;
             const randomY = Math.random() * 140 - 70;
             btn.style.transform = `translate(${randomX-10}px, ${randomY}px)`;
-            
+            btn.classList.add('bg-rose-100', 'dark:bg-rose-950/40', 'text-rose-600', 'dark:text-rose-400', 'border-rose-400');
             attempts++;
-            if (attempts > 3) {
-                btn.innerText = "Sem trapacear! 😂";
-            }
-        }
+            if (attempts > 3) btn.innerText = "Sem trapacear! 😂";
+        };
 
-        function acceptProposal() {
+        window.acceptProposal = function() {
             document.getElementById('proposal-active').classList.add('hidden');
             document.getElementById('proposal-accepted').classList.remove('hidden');
-        }
+        };
+
+        // Escutar Enter no input de mensagens
+        document.getElementById('message-input')?.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') { window.sendMessage(); }
+        });
+
+        // Inicia a Firebase
+        initFirebase();
     </script>
 </body>
 </html>
